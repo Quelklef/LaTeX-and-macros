@@ -1,5 +1,5 @@
 {
-  "name": "LaTeX and macros",
+  "name": "LaTeX and Macros",
   "version": "1.0",
   "description": "Write basic LaTeX and custom text replacement rules",
   "content_scripts": [
