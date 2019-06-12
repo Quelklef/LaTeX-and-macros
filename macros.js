@@ -238,7 +238,18 @@ const replacements = {
   "\\not\\parallel": "∦",
   "\\flat": "♭",
   "\\natural": "♮",
-  "\\sharp": "♯"
+  "\\sharp": "♯",
+
+  // Letters---corresponds to $dollars$ in LaTeX.
+  "\\a": "𝑎", "\\A": "𝐴", "\\b": "𝑏", "\\B": "𝐵", "\\c": "𝑐", "\\C": "𝐶",
+  "\\d": "𝑑", "\\D": "𝐷", "\\e": "𝑒", "\\E": "𝐸", "\\f": "𝑓", "\\F": "𝐹",
+  "\\g": "𝑔", "\\G": "𝐺", "\\h": "ℎ", "\\H": "𝐻", "\\i": "𝑖", "\\I": "𝐼",
+  "\\j": "𝑗", "\\J": "𝐽", "\\k": "𝑘", "\\K": "𝐾", "\\l": "𝑙", "\\L": "𝐿",
+  "\\m": "𝑚", "\\M": "𝑀", "\\n": "𝑛", "\\N": "𝑁", "\\o": "𝑜", "\\O": "𝑂",
+  "\\p": "𝑝", "\\P": "𝑃", "\\q": "𝑞", "\\Q": "𝑄", "\\r": "𝑟", "\\R": "𝑅",
+  "\\s": "𝑠", "\\S": "𝑆", "\\t": "𝑡", "\\T": "𝑇", "\\u": "𝑢", "\\U": "𝑈",
+  "\\v": "𝑣", "\\V": "𝑉", "\\w": "𝑤", "\\W": "𝑊", "\\x": "𝑥", "\\X": "𝑋",
+  "\\y": "𝑦", "\\Y": "𝑌", "\\z": "𝑧", "\\Z": "𝑍"
 }
 
 function doReplacements(text, dict) {
@@ -268,6 +279,28 @@ const commands = {
     "R": "ℜ", "s": "𝔰", "S": "𝔖", "t": "𝔱", "T": "𝔗", "u": "𝔲", "U": "𝔘",
     "v": "𝔳", "V": "𝔙", "x": "𝔵", "X": "𝔛", "y": "𝔶", "Y": "𝔜", "z": "𝔷",
     "Z": "ℨ",
+  }),
+
+  "\\mathscr": text => doReplacements(text, {
+    "a": "𝒶", "A": "𝒜", "b": "𝒷", "B": "ℬ", "c": "𝒸", "C": "𝒞", "d": "𝒹",
+    "D": "𝒟", "e": "ℯ", "E": "ℰ", "f": "𝒻", "F": "ℱ", "g": "ℊ", "G": "𝒢",
+    "h": "𝒽", "H": "ℋ", "i": "𝒾", "I": "ℐ", "j": "𝒿", "J": "𝒥", "k": "𝓀",
+    "K": "𝒦", "l": "𝓁", "L": "ℒ", "m": "𝓂", "M": "ℳ", "n": "𝓃", "N": "𝒩",
+    "o": "ℴ", "O": "𝒪", "p": "𝓅", "P": "𝒫", "q": "𝓆", "Q": "𝒬", "r": "𝓇",
+    "R": "ℛ", "s": "𝓈", "S": "𝒮", "t": "𝓉", "T": "𝒯", "u": "𝓊", "U": "𝒰",
+    "v": "𝓋", "V": "𝒱", "w": "𝓌", "W": "𝒲", "x": "𝓍", "X": "𝒳", "y": "𝓎",
+    "Y": "𝒴", "z": "𝓏", "Z": "𝒵",
+  }),
+
+  "\\mathcal": text => doReplacements(text, {
+    "a": "𝓪", "A": "𝓐", "b": "𝓫", "B": "𝓑", "c": "𝓬", "C": "𝓒", "d": "𝓭",
+    "D": "𝓓", "e": "𝓮", "E": "𝓔", "f": "𝓯", "F": "𝓕", "g": "𝓰", "G": "𝓖",
+    "h": "𝓱", "H": "𝓗", "i": "𝓲", "I": "𝓘", "j": "𝓳", "J": "𝓙", "k": "𝓴",
+    "K": "𝓚", "l": "𝓵", "L": "𝓛", "m": "𝓶", "M": "𝓜", "n": "𝓷", "N": "𝓝",
+    "o": "𝓸", "O": "𝓞", "p": "𝓹", "P": "𝓟", "q": "𝓺", "Q": "𝓠", "r": "𝓻",
+    "R": "𝓡", "s": "𝓼", "S": "𝓢", "t": "𝓽", "T": "𝓣", "u": "𝓾", "U": "𝓤",
+    "v": "𝓿", "V": "𝓥", "w": "𝔀", "W": "𝓦", "x": "𝔁", "X": "𝓧", "y": "𝔂",
+    "Y": "𝓨", "z": "𝔃", "Z": "𝓩",
   }),
 
   "\\textit": text => doReplacements(text, {
@@ -317,17 +350,15 @@ for (const key of Object.keys(replacements)) {
 }
 // Commands have no escapes since they will not fire without {}
 
-// Key list, sorted by decreasing order of length
+// Key lists, sorted by decreasing order of length
 const replacementKeys = Object.keys(replacements).sort((a, b) => b.length - a.length);
 const commandKeys = Object.keys(commands).sort((a, b) => b.length - a.length);
-// Call a macro 'ambiguous' if it is the prefix to another macro
-// Build the table of whether or not a macro is ambiguous
-/* const ambiguous = (() => {
-  let ambiguous = {};
-  for (const macro of replacementKeys)
-    ambiguous[macro] = replacementKeys.some(m => m !== macro && m.startsWith(macro));
-  return ambiguous;
-})(); */
+const macroKeys = [].concat(replacementKeys, commandKeys).sort((a, b) => b.length - a.length);
+
+// Call a key 'ambiguous' if it is the prefix to another macro
+function ambiguous(key) {
+  return macroKeys.some(m => m !== key && m.startsWith(key));
+}
 
 
 
@@ -420,8 +451,9 @@ let anchor = 0;
 let lastKeypressTime = 0;
 
 // Tolerance to fast typing
-// Numbers in the 0-3 range are suggested
-const tolerance = 1;
+// Numbers in the 1-4 range are suggested
+// Tolerance /must/ be 1 in order for ambiguous macros to work
+const tolerance = 2;
 
 document.addEventListener("click", function clickListener() {
   anchor = getCursor(document.activeElement) - 1;
@@ -462,6 +494,8 @@ function applyMacros($focus, n, curPos) {
   // Replacements
   for (let i = 0; i < replacementKeys.length; i++) {
     const key = replacementKeys[i];
+    // Skip if ambiguous and STILL ambiguous after another letter
+    if (ambiguous(key) && !content[n] || ambiguous(key + content[n])) continue;
     if (n - key.length < anchor) continue;
     const from = key;
     const to = replacements[key];
@@ -477,6 +511,7 @@ function applyMacros($focus, n, curPos) {
 
     for (let i = 0; i < commandKeys.length; i++) {
       const key = commandKeys[i];
+      if (ambiguous(key) && !content[n] || ambiguous(key + content[n])) continue;
       const argument = content.substring(openBraceIdx + 1, n - 1);
       const from = key + '{' + argument + '}';
       const to = commands[key](argument);
