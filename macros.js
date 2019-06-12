@@ -447,7 +447,7 @@ function tryOverwrite($el, n, from, to) {
     : $el.isContentEditable ? "innerText"
     : (() => { throw ["Cannot overwrite in element ", $el] })();
   
-  const [pre, here, post] = split2($el[valueAttr], n - from.length, n);
+  const [pre, here, post] = split2(getContent($el), n - from.length, n);
   if (here !== from) return false;
   $el[valueAttr] = pre + to + post;
   return true;
@@ -486,7 +486,11 @@ function setCursor($el, pos) {
   } else if ($el.isContentEditable) {
     // https://stackoverflow.com/a/6249440/4608364
     const range = document.createRange();
-    range.setStart($el.childNodes[0], pos);
+    if ($el.childNodes.length !== 0) {
+      range.setStart($el.childNodes[0], pos);
+    } else {
+      range.setStart($el, pos);
+    }
     range.collapse(true);
     const sel = window.getSelection();
     sel.removeAllRanges();
