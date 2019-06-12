@@ -509,6 +509,10 @@ let lastKeypressTime = 0;
 // Numbers in the 0-3 range are suggested
 const tolerance = 1;
 
+document.addEventListener("click", function clickListener() {
+  anchor = getCursor(document.activeElement) - 1;
+});
+
 document.addEventListener("keyup", function keyListener(event) {
   const $focus = document.activeElement;
   const curPos = getCursor($focus);  // "Claim" this value ASAP before it changes
@@ -516,9 +520,9 @@ document.addEventListener("keyup", function keyListener(event) {
   
   const curTime = +Date.now();
   if (curTime - lastKeypressTime > timeout) {
-    anchor = curPos;
+    anchor = curPos - 1;
   }
-  anchor = Math.min(anchor, getContent($focus).length - 1);
+  anchor = Math.min(anchor, curPos, getContent($focus).length - 1);
   lastKeypressTime = curTime;
   
   // If the person is typing fast, we may have missed a cursor position or two

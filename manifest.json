@@ -1,6 +1,6 @@
 {
   "name": "LaTeX and Macros",
-  "version": "1.0",
+  "version": "1.0.1",
   "description": "Write basic LaTeX and custom text replacement rules",
   "content_scripts": [
     {
