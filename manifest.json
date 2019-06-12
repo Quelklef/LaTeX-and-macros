@@ -1,0 +1,13 @@
+{
+  "name": "LaTeX and macros",
+  "version": "1.0",
+  "description": "Write basic LaTeX and custom text replacement rules",
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "css": [],
+      "js": ["macros.js"]
+    }
+  ],
+  "manifest_version": 2
+}
