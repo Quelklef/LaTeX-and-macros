@@ -1,3 +1,6 @@
 chrome.runtime.onInstalled.addListener(function() {
-  chrome.storage.sync.set({'enabled_presets': []});
+  chrome.storage.sync.set({
+    'enabledPresets': [],
+    'customReplacements': {},
+  });
 });

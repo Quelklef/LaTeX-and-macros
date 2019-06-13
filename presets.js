@@ -131,10 +131,26 @@ const bold_letters = {
 
 
 
+// == General Symbol Preset == //
+
+const preset_general = registerPreset({
+  "name": "General Symbols",
+  "replacements": {
+    "--": "—",
+    "->": "→",
+    "<-": "←",
+  },
+  "commands": {
+    "\\italic": text => doReplacements(text, italic_letters),
+    "\\bold": text => doReplacements(text, bold_letters),
+  },
+});
+
+
 // == Sub- and Super-script Preset == //
 
 const preset_sub_super = registerPreset({
-  "name": "Sub/Super scripts",
+  "name": "Sub/Super Scripts",
   "replacements": {},
   "commands": {},
 });
@@ -376,22 +392,5 @@ const preset_latex = registerPreset({
     "\\textbf"  : text => doReplacements(text, bold_letters),
     "_"         : text => doReplacements(text, subscripts),
     "^"         : text => doReplacements(text, superscripts),
-  },
-});
-
-
-
-// == General Symbol Preset == //
-
-const preset_general = registerPreset({
-  "name": "General",
-  "replacements": {
-    "--": "—",
-    "->": "→",
-    "<-": "←",
-  },
-  "commands": {
-    "\\italic": text => doReplacements(text, italic_letters),
-    "\\bold": text => doReplacements(text, bold_letters),
   },
 });

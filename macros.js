@@ -1,4 +1,4 @@
-chrome.storage.sync.get('enabled_presets', items => {
+chrome.storage.sync.get(['enabledPresets', 'customReplacements'], items => {
   // Macros come in two flavors:
   // replacements, which are straight text replacements,
   // and commands, like \this{}, which are single-input JS functions
@@ -11,14 +11,17 @@ chrome.storage.sync.get('enabled_presets', items => {
   const replacements = { };
   const commands = { };
 
-  for (const preset_name of items.enabled_presets) {
-    const preset = presets[preset_name];
+  for (const presetName of items.enabledPresets) {
+    const preset = presets[presetName];
 
     for (const key in preset.replacements)
       replacements[key] = preset.replacements[key];
     for (const key in preset.commands)
       commands[key] = preset.commands[key];
   }
+
+  for (const key in items.customReplacements)
+    replacements[key] = items.customReplacements[key];
 
   // Generate escapes, so \alpha -> α but \\alpha -> \alpha
   for (const key of Object.keys(replacements)) {
