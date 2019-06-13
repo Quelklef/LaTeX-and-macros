@@ -18,7 +18,7 @@ h2 {
 
 #wrap {
   width: 800px;
-  line-height: 1.5em;
+  line-height: 1.7em;
 }
 td {
   font-size: 12px;
@@ -67,12 +67,34 @@ code {
   padding: 4px;
 }
 
-#custom-replacements {
+textarea {
   width: 100%;
-  min-height: 400px;
+  min-height: 300px;
 }
 
 h3 { margin-top: 20px; }
+
+.accordian-title h3:after {
+  content: '';
+  border: 6px solid transparent;
+  border-top-color: black;
+
+  position: relative;
+  top: 11px;
+  left: 8px;
+}
+.accordian-title.show-content h3:after {
+  border-top-color: transparent;
+  border-bottom-color: black;
+
+  top: -11px;
+}
+
+textarea:focus { outline: none; }
+
+textarea {
+  padding: 8px;
+}
 
     </style>
   </head>
@@ -87,13 +109,13 @@ h3 { margin-top: 20px; }
 
     <h2>Custom Macros</h2>
     <h3>Custom Replacements</h3>
-    <p>Enter custom replacement rules below. There should be one per line, in the form <code>FROM -> TO</code>, e.g. <code>\therefore -> &there4;</code>. If either the <code>FROM</code> or <code>TO</code> sections of the rule contain the text <code>-></code>, it should be written as <code>\></code>, and <code>\</code> should be written as <code>\\</code>. The space around the <code>-></code> is required.</p>
+    <p>Enter custom replacement rules below. There should be one per line, in the form <code>FROM -&gt; TO</code>, e.g. <code>\therefore -> &there4;</code>. If either the <code>FROM</code> or <code>TO</code> sections of the rule contain the text <code>-&gt;</code>, it should be written as <code>-\&gt;</code>, and <code>\</code> should be written as <code>\\</code>. The space around the <code>-></code> is required.</p>
     <textarea id="custom-replacements"></textarea>
 
     <h3>Custom Commands</h3>
-    <p>Not yet supported.</h3>
-
-    </textarea>
+    <p>Custom commands are single-argument functions accept and return text. A custom function <code>\f</code> is invoked like <code>\f{input text}</code>. To create your own custom commands, write JavaScript code below, calling <code>defCommand(commandName, command)</code> for ech command. For instance, `defCommand("\\uppercase", text => text.toUpperCase())` creates a command that turns text uppercase; it would then be used like <code>\uppercase{some text}</code> which would produce <code>SOME TEXT</code>.</p>
+    <textarea id="custom-commands">// Write javascript here, e.g..
+//defCommand('\\uppercase', text => text.toUpperCase());</textarea>
   </div>
 
   <script src="presets.js" type="text/javascript" charset="utf-8"></script>

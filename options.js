@@ -102,7 +102,6 @@ window.addEventListener('load', function() {
 
   const $customReplacements = document.getElementById('custom-replacements');
   chrome.storage.sync.get('customReplacements', items => {
-    console.log(items.customReplacements);
     $customReplacements.value =
       Object.entries(items.customReplacements).map(([key, val]) =>
             key.replace('\\', '\\\\').replace('->', '-\\>') +
@@ -126,6 +125,17 @@ window.addEventListener('load', function() {
     }
     return result;
   }
+
+
+  const $customCommands = document.getElementById('custom-commands');
+  chrome.storage.sync.get('customCommands', items => {
+    if (items.customCommands)
+      $customCommands.value = items.customCommands;
+  });
+
+  $customCommands.addEventListener('input', function() {
+    chrome.storage.sync.set({ 'customCommands': $customCommands.value });
+  });
 
 });
 

@@ -1,4 +1,4 @@
-chrome.storage.sync.get(['enabledPresets', 'customReplacements'], items => {
+chrome.storage.sync.get(['enabledPresets', 'customReplacements', 'customCommands'], items => {
   // Macros come in two flavors:
   // replacements, which are straight text replacements,
   // and commands, like \this{}, which are single-input JS functions
@@ -22,6 +22,12 @@ chrome.storage.sync.get(['enabledPresets', 'customReplacements'], items => {
 
   for (const key in items.customReplacements)
     replacements[key] = items.customReplacements[key];
+
+  // Required for customCommands eval
+  function defCommand(name, cmd) {
+    commands[name] = cmd;
+  }
+  eval(items.customCommands);
 
   // Generate escapes, so \alpha -> α but \\alpha -> \alpha
   for (const key of Object.keys(replacements)) {
