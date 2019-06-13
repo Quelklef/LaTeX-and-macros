@@ -5,6 +5,26 @@
 // and commands, like \this{}, which are single-input JS functions
 // Replacements should not contain { or }.
 
+const superscripts = {
+  "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴", "5": "⁵", "6": "⁶",
+  "7": "⁷", "8": "⁸", "9": "⁹",
+
+  "+": "⁺", "-": "⁻", "(": "⁽", ")": "⁾", "a": "ᵃ", "b": "ᵇ", "c": "ᶜ",
+  "d": "ᵈ", "e": "ᵉ", "f": "ᶠ", "g": "ᵍ", "h": "ʰ", "i": "ⁱ", "j": "ʲ",
+  "k": "ᵏ", "l": "ˡ", "m": "ᵐ", "n": "ⁿ", "o": "ᵒ", "p": "ᵖ", "r": "ʳ",
+  "s": "ˢ", "t": "ᵗ", "u": "ᵘ", "v": "ᵛ", "w": "ʷ", "x": "ˣ", "y": "ʸ",
+  "z": "ᶻ",
+};
+
+const subscripts = {
+  "0": "₀", "1": "₁", "2": "₂", "3": "₃", "4": "₄", "5": "₅", "6": "₆",
+  "7": "₇", "8": "₈", "9": "₉",
+
+  "+": "⁺", "-": "⁻", "(": "₍", ")": "₎", "a": "ₐ", "e": "ₑ", "h": "ₕ",
+  "i": "ᵢ", "j": "ⱼ", "k": "ₖ", "l": "ₗ", "m": "ₘ", "n": "ₙ", "o": "ₒ",
+  "p": "ₚ", "r": "ᵣ", "s": "ₛ", "t": "ₜ", "u": "ᵤ", "v": "ᵥ", "x": "ₓ",
+}
+
 const replacements = {
   "\\alpha": "α",
   "\\Alpha": "Α",
@@ -22,6 +42,8 @@ const replacements = {
   "\\Eta": "Η",
   "\\theta": "θ",
   "\\Theta": "Θ",
+  "\\iota": "ι",
+  "\\Iota": "I",
   "\\kappa": "κ",
   "\\Kappa": "Κ",
   "\\lambda": "λ",
@@ -204,16 +226,6 @@ const replacements = {
   "\\rfloor": "⌋",
   "\\lceil": "⌈",
   "\\rceil": "⌉",
-  "_0": "₀", "^0": "⁰", "_1": "₁", "^1": "¹", "_2": "₂", "^2": "²", "_3": "₃",
-  "^3": "³", "_4": "₄", "^4": "⁴", "_5": "₅", "^5": "⁵", "_6": "₆", "^6": "⁶",
-  "_7": "₇", "^7": "⁷", "_8": "₈", "^8": "⁸", "_9": "₉", "^9": "⁹", "_+": "⁺",
-  "^+": "⁺", "_-": "⁻", "^-": "⁻", "_(": "₍", "^(": "⁽", "_)": "₎", "^)": "⁾",
-  "_a": "ₐ", "^a": "ᵃ", "^b": "ᵇ", "^c": "ᶜ", "^d": "ᵈ", "_e": "ₑ", "^e": "ᵉ",
-  "^f": "ᶠ", "^g": "ᵍ", "_h": "ₕ", "^h": "ʰ", "_i": "ᵢ", "^i": "ⁱ", "_j": "ⱼ",
-  "^j": "ʲ", "_k": "ₖ", "^k": "ᵏ", "_l": "ₗ", "^l": "ˡ", "_m": "ₘ", "^m": "ᵐ",
-  "_n": "ₙ", "^n": "ⁿ", "_o": "ₒ", "^o": "ᵒ", "_p": "ₚ", "^p": "ᵖ", "_r": "ᵣ",
-  "^r": "ʳ", "_s": "ₛ", "^s": "ˢ", "_t": "ₜ", "^t": "ᵗ", "_u": "ᵤ", "^u": "ᵘ",
-  "_v": "ᵥ", "^v": "ᵛ", "^w": "ʷ", "_x": "ₓ", "^x": "ˣ", "^y": "ʸ", "^z": "ᶻ",
   "\\mp": "∓",
   "\\dotplus": "∔",
   "\\bullet": "∙",
@@ -240,6 +252,12 @@ const replacements = {
   "\\natural": "♮",
   "\\sharp": "♯",
 
+  "\\Ihat": "Î",
+  "\\ihat": "î",
+  "\\Jhat": "Ĵ",
+  "\\jhat": "ĵ",
+  // No khat :(
+
   // Letters---corresponds to $dollars$ in LaTeX.
   "\\a": "𝑎", "\\A": "𝐴", "\\b": "𝑏", "\\B": "𝐵", "\\c": "𝑐", "\\C": "𝐶",
   "\\d": "𝑑", "\\D": "𝐷", "\\e": "𝑒", "\\E": "𝐸", "\\f": "𝑓", "\\F": "𝐹",
@@ -251,7 +269,23 @@ const replacements = {
   "\\v": "𝑣", "\\V": "𝑉", "\\w": "𝑤", "\\W": "𝑊", "\\x": "𝑥", "\\X": "𝑋",
   "\\y": "𝑦", "\\Y": "𝑌", "\\z": "𝑧", "\\Z": "𝑍",
 
-  "---": "—",
+  // Fun stuff
+  "--": "—",
+  "->": "→",
+  "<-": "←",
+  "<3": "🖤",
+  "!?": "⁉",
+  "??": "⁇",
+  "??": "⁇",
+
+  // TODO: Emojis
+};
+
+for (const key in subscripts) {
+  replacements["_" + key] = subscripts[key];
+}
+for (const key in superscripts) {
+  replacements["^" + key] = superscripts[key];
 }
 
 function doReplacements(text, dict) {
@@ -260,6 +294,17 @@ function doReplacements(text, dict) {
 }
 
 const commands = {
+  "\\math": text => doReplacements(text, {
+    "a": "𝑎", "A": "𝐴", "b": "𝑏", "B": "𝐵", "c": "𝑐", "C": "𝐶", "d": "𝑑",
+    "D": "𝐷", "e": "𝑒", "E": "𝐸", "f": "𝑓", "F": "𝐹", "g": "𝑔", "G": "𝐺",
+    "h": "ℎ", "H": "𝐻", "i": "𝑖", "I": "𝐼", "j": "𝑗", "J": "𝐽", "k": "𝑘",
+    "K": "𝐾", "l": "𝑙", "L": "𝐿", "m": "𝑚", "M": "𝑀", "n": "𝑛", "N": "𝑁",
+    "o": "𝑜", "O": "𝑂", "p": "𝑝", "P": "𝑃", "q": "𝑞", "Q": "𝑄", "r": "𝑟",
+    "R": "𝑅", "s": "𝑠", "S": "𝑆", "t": "𝑡", "T": "𝑇", "u": "𝑢", "U": "𝑈",
+    "v": "𝑣", "V": "𝑉", "w": "𝑤", "W": "𝑊", "x": "𝑥", "X": "𝑋", "y": "𝑦",
+    "Y": "𝑌", "z": "𝑧", "Z": "𝑍",
+  }),
+
   "\\mathbb": text => doReplacements(text, {
     "a": "𝕒", "A": "𝔸", "b": "𝕓", "B": "𝔹", "c": "𝕔", "C": "ℂ", "d": "𝕕",
     "D": "𝔻", "e": "𝕖", "E": "𝔼", "f": "𝕗", "F": "𝔽", "g": "𝕘", "G": "𝔾",
@@ -344,11 +389,14 @@ const commands = {
     "𝘷": "𝙫", "𝘝": "𝙑", "𝘸": "𝙬", "𝘞": "𝙒", "𝘹": "𝙭", "𝘟": "𝙓", "𝘺": "𝙮",
     "𝘠": "𝙔", "𝘻": "𝙯", "𝘡": "𝙕",
   }),
+
+  "_": text => doReplacements(text, subscripts),
+  "^": text => doReplacements(text, superscripts),
 }
 
 // Generate escapes, so \alpha -> α but \\alpha -> \alpha
 for (const key of Object.keys(replacements)) {
-  replacements[key[0] + key] = key;
+  replacements['\\' + key] = key;
 }
 // Commands have no escapes since they will not fire without {}
 
@@ -358,8 +406,12 @@ const commandKeys = Object.keys(commands).sort((a, b) => b.length - a.length);
 const macroKeys = [].concat(replacementKeys, commandKeys).sort((a, b) => b.length - a.length);
 
 // Call a key 'ambiguous' if it is the prefix to another macro
+const ambiguousKeys = new Set(macroKeys.map(
+  key => // All prefixes of key
+    new Array(key.length - 1).fill(0).map((_, i) => key.substring(0, i))
+).flat());
 function ambiguous(key) {
-  return macroKeys.some(m => m !== key && m.startsWith(key));
+  return ambiguousKeys.has(key);
 }
 
 
@@ -513,7 +565,6 @@ function applyMacros($focus, n, curPos) {
 
     for (let i = 0; i < commandKeys.length; i++) {
       const key = commandKeys[i];
-      if (ambiguous(key) && !content[n] || ambiguous(key + content[n])) continue;
       const argument = content.substring(openBraceIdx + 1, n - 1);
       const from = key + '{' + argument + '}';
       const to = commands[key](argument);
