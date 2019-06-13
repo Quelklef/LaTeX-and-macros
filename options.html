@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <style>
+
+body {
+  display: flex;
+  justify-content: center;
+}
+
+#presets {
+  width: 1200px;
+}
+td {
+  font-size: 12px;
+}
+
+.cols {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.peek {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.replacements { width: 200px; }
+.commands { width: 1000px; }
+.replacements, .commands {
+  box-sizing: border-box;
+}
+
+.preset {
+  border: 1px solid black;
+  padding: 15px;
+  margin-top: 30px;
+}
+
+    </style>
+  </head>
+  <body>
+
+  <div id="presets">
+  </div>
+
+  <script src="presets.js" type="text/javascript" charset="utf-8"></script>
+  <script src="options.js"></script>
+
+  </body>
+</html>
