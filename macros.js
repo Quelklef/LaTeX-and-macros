@@ -15,7 +15,6 @@ chrome.storage.sync.get(['enabledPresets', 'customReplacements', 'customCommands
     const preset = presets[presetName];
 
     if (!preset) {
-      console.log(`Warning: Invalid preset ID '${presetName}' in enabled presets`);
       // Skip it
       continue;
     }
@@ -49,7 +48,7 @@ chrome.storage.sync.get(['enabledPresets', 'customReplacements', 'customCommands
   // Call a key 'ambiguous' if it is the prefix to another macro
   const ambiguousKeys = new Set(macroKeys.map(
     key => // All prefixes of key
-      new Array(key.length - 1).fill(0).map((_, i) => key.substring(0, i))
+      new Array(key.length).fill(0).map((_, i) => key.substring(0, i))
   ).flat());
   function ambiguous(key) {
     return ambiguousKeys.has(key);
