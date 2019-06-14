@@ -17,7 +17,7 @@ h2 {
 }
 
 #wrap {
-  width: 800px;
+  width: 1000px;
   line-height: 1.7em;
 }
 td {
@@ -30,8 +30,10 @@ td {
   justify-content: center;
 }
 .cols > * {
-  flex-grow: 1;
-  margin: 0 10px;
+  flex: 1;
+}
+.cols > *:not(:first-child) {
+  margin-left: 10px;
 }
 
 .peek {
@@ -96,6 +98,16 @@ textarea {
   padding: 8px;
 }
 
+input[type=number] {
+  width: 100px;
+  padding: 3px 5px;
+}
+input:focus { outline: none; }
+
+input, textarea { border: 1px solid rgba(0, 0, 0, 0.2); }
+input:hover, textarea:hover { border: 1px solid rgba(0, 0, 0, 0.4); }
+input:focus, textarea:focus { border: 1px solid black; }
+
     </style>
   </head>
   <body>
@@ -116,6 +128,23 @@ textarea {
     <p>Custom commands are single-argument functions accept and return text. A custom function <code>\f</code> is invoked like <code>\f{input text}</code>. To create your own custom commands, write JavaScript code below, calling <code>defCommand(commandName, command)</code> for ech command. For instance, `defCommand("\\uppercase", text => text.toUpperCase())` creates a command that turns text uppercase; it would then be used like <code>\uppercase{some text}</code> which would produce <code>SOME TEXT</code>.</p>
     <textarea id="custom-commands">// Write javascript here, e.g..
 //defCommand('\\uppercase', text => text.toUpperCase());</textarea>
+
+    <h2>Settings</h2>
+
+    <div class="cols">
+      <div>
+      <p>Timeout</p>
+      <input type="number" id="timeout" min="0" step="1" />
+      <p><em>Timeout</em> is the tolerance to slow typing. It is the number of milliseconds of no typing tolerated, after which the current command will end. So if you type <code>\alp</code>, wait a bit, and then type <code>ha</code>, the command <code>\alpha</code> will only be invoked if the time you waited was &leq; <em>timeout</em>.</p>
+      </div>
+
+      <div>
+      <p>Lookbehind</p>
+      <input type="number" id="lookbehind" min="0" step="1" />
+      <p><em>Lookbehind</em> is the tolerance to fast typing. It is the number of characters that will be checked behind the cursor for macros. Sometimes, a keypress will be missed, so that you may type <code>\alpha</code> but it is not recognized. Lookbehind means that if you continue typing, say, typing a space to result in <code>\alpha </code>, when you type the space, the extension will go back and <em>re-</em>check <code>\alpha</code>, recognize it, and invoke it.</p>
+      </div>
+    </div>
+
   </div>
 
   <script src="presets.js" type="text/javascript" charset="utf-8"></script>

@@ -141,14 +141,14 @@ chrome.storage.sync.get(['enabledPresets', 'customReplacements', 'customCommands
 
   // Every time `timeout` ms go by without a keypress, `anchor` is set to
   // the current cursor position.
-  const timeout = 1500;
+  const timeout = items.timeout;
   let anchor = 0;
   let lastKeypressTime = 0;
 
   // Tolerance to fast typing
   // Numbers in the 1-4 range are suggested
   // Tolerance /must/ be 1 in order for ambiguous macros to work
-  const tolerance = 2;
+  const lookbehind = items.lookbehind;
 
   document.addEventListener("click", function clickListener() {
     anchor = getCursor(document.activeElement) - 1;
@@ -168,7 +168,7 @@ chrome.storage.sync.get(['enabledPresets', 'customReplacements', 'customCommands
     
     // If the person is typing fast, we may have missed a cursor position or two
     // Account for this by backtracking and retesting for replacementKeys
-    for (let i = 0; i <= tolerance; i++) {
+    for (let i = 0; i <= lookbehind; i++) {
       const succ = applyMacros($focus, curPos - i, curPos)
       // Break on first macro applied
       if (succ) break;

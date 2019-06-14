@@ -127,6 +127,7 @@ window.addEventListener('load', function() {
   }
 
 
+
   const $customCommands = document.getElementById('custom-commands');
   chrome.storage.sync.get('customCommands', items => {
     if (items.customCommands)
@@ -136,6 +137,24 @@ window.addEventListener('load', function() {
   $customCommands.addEventListener('input', function() {
     chrome.storage.sync.set({ 'customCommands': $customCommands.value });
   });
+
+
+  const $timeout = document.getElementById('timeout');
+  chrome.storage.sync.get('timeout', items => {
+    $timeout.value = items.timeout;
+  });
+  $timeout.addEventListener('input', function() {
+    chrome.storage.sync.set({ 'timeout': parseInt($timeout.value) });
+  });
+
+  const $lookbehind = document.getElementById('lookbehind');
+  chrome.storage.sync.get('lookbehind', items => {
+    $lookbehind.value = items.lookbehind;
+  });
+  $lookbehind.addEventListener('input', function() {
+    chrome.storage.sync.set({ 'lookbehind': parseInt($lookbehind.value) });
+  });
+
 
 });
 
