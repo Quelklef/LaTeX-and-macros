@@ -1,4 +1,5 @@
-// Many of these macros come from https://golopot.github.io/tex-to-unicode/
+// Many replacements from https://golopot.github.io/tex-to-unicode/
+// Many replacements from Wikipedia
 
 function doReplacements(text, dict) {
   // Apply single-letter replacements to text

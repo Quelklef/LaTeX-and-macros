@@ -18,7 +18,7 @@ window.addEventListener('load', function() {
   }
 
   function renderPreset(preset) {
-    const testText = "ABCXYZ abcxyz !@#$%^&*()";
+    const testText = "abc ABC 012 !@#";
 
     return `
     <div class="preset">

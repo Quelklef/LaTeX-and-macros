@@ -133,15 +133,16 @@ input:focus, textarea:focus { border: 1px solid black; }
 
     <div class="cols">
       <div>
-      <p>Timeout</p>
+      <p><b>Timeout</b></p>
       <input type="number" id="timeout" min="0" step="1" />
       <p><em>Timeout</em> is the tolerance to slow typing. It is the number of milliseconds of no typing tolerated, after which the current command will end. So if you type <code>\alp</code>, wait a bit, and then type <code>ha</code>, the command <code>\alpha</code> will only be invoked if the time you waited was &leq; <em>timeout</em>.</p>
       </div>
 
       <div>
-      <p>Lookbehind</p>
-      <input type="number" id="lookbehind" min="0" step="1" />
+      <p><b>Lookbehind</b></p>
+      <input type="number" id="lookbehind" min="1" step="1" />
       <p><em>Lookbehind</em> is the tolerance to fast typing. It is the number of characters that will be checked behind the cursor for macros. Sometimes, a keypress will be missed, so that you may type <code>\alpha</code> but it is not recognized. Lookbehind means that if you continue typing, say, typing a space to result in <code>\alpha </code>, when you type the space, the extension will go back and <em>re-</em>check <code>\alpha</code>, recognize it, and invoke it.</p>
+      <p>Some of the extension's functionality requires lookbehind to be 1 or above, so don't set it below 1.</p>
       </div>
     </div>
 
