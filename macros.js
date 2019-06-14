@@ -150,13 +150,15 @@ chrome.storage.sync.get(['enabledPresets', 'customReplacements', 'customCommands
   const lookbehind = items.lookbehind;
 
   document.addEventListener("click", function clickListener() {
-    anchor = getCursor(document.activeElement) - 1;
+    const $focus = document.activeElement;
+    if (isEditable($focus))
+      anchor = getCursor(document.activeElement) - 1;
   });
 
   document.addEventListener("keyup", function keyListener(event) {
     const $focus = document.activeElement;
-    const curPos = getCursor($focus);  // "Claim" this value ASAP before it changes
     if (!isEditable($focus)) return;
+    const curPos = getCursor($focus);  // "Claim" this value ASAP before it changes
     
     const curTime = +Date.now();
     if (curTime - lastKeypressTime > timeout) {
