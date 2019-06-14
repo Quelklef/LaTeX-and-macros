@@ -129,6 +129,18 @@ const bold_letters = {
   "𝘠": "𝙔", "𝘻": "𝙯", "𝘡": "𝙕",
 };
 
+const monospace_letters = {
+  "𝚊": "a", "𝙰": "A", "𝚋": "b", "𝙱": "B", "𝚌": "c", "𝙲": "C", "𝚍": "d",
+  "𝙳": "D", "𝚎": "e", "𝙴": "E", "𝚏": "f", "𝙵": "F", "𝚐": "g", "𝙶": "G",
+  "𝚑": "h", "𝙷": "H", "𝚒": "i", "𝙸": "I", "𝚓": "j", "𝙹": "J", "𝚔": "k",
+  "𝙺": "K", "𝚕": "l", "𝙻": "L", "𝚖": "m", "𝙼": "M", "𝚗": "n", "𝙽": "N",
+  "𝚘": "o", "𝙾": "O", "𝚙": "p", "𝙿": "P", "𝚚": "q", "𝚀": "Q", "𝚛": "r",
+  "𝚁": "R", "𝚜": "s", "𝚂": "S", "𝚝": "t", "𝚃": "T", "𝚞": "u", "𝚄": "U",
+  "𝚟": "v", "𝚅": "V", "𝚠": "w", "𝚆": "W", "𝚡": "x", "𝚇": "X", "𝚢": "y",
+  "𝚈": "Y", "𝚣": "z", "𝚉": "Z", "0": "𝟶", "1": "𝟷", "2": "𝟸", "3": "𝟹",
+  "4": "𝟺", "5": "𝟻", "6": "𝟼", "7": "𝟽", "8": "𝟾", "9": "𝟿",
+};
+
 const emoji = {
   "grin": "😀",
   "grin-2": "😃",
@@ -306,7 +318,9 @@ const preset_general = registerPreset({
   },
   "commands": {
     "\\italic": text => doReplacements(text, italic_letters),
-    "\\bold": text => doReplacements(text, bold_letters),
+    "\\bold"  : text => doReplacements(text, bold_letters),
+    "\\mono"  : text => doReplacements(text, monospace_letters),
+    "\\script": text => doReplacements(text, script_letters),
   },
 });
 
@@ -556,11 +570,11 @@ const preset_latex = registerPreset({
     "\\mathcal" : text => doReplacements(text, calligraphic_letters),
     "\\textit"  : text => doReplacements(text, italic_letters),
     "\\textbf"  : text => doReplacements(text, bold_letters),
+    "\\textttt" : text => doReplacements(text, monospace_letters),
     "_"         : text => doReplacements(text, subscripts),
     "^"         : text => doReplacements(text, superscripts),
   },
 });
-
 
 
 // == Emoji Preset == //
