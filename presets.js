@@ -11,7 +11,7 @@ function registerPreset(preset) {
   return preset;
 }
 
-// ==  Letter mappins shared between presets == //
+// ==  Mappings shared between presets == //
 
 const superscripts = {
   "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴", "5": "⁵", "6": "⁶",
@@ -31,7 +31,7 @@ const subscripts = {
   "+": "⁺", "-": "⁻", "(": "₍", ")": "₎", "a": "ₐ", "e": "ₑ", "h": "ₕ",
   "i": "ᵢ", "j": "ⱼ", "k": "ₖ", "l": "ₗ", "m": "ₘ", "n": "ₙ", "o": "ₒ",
   "p": "ₚ", "r": "ᵣ", "s": "ₛ", "t": "ₜ", "u": "ᵤ", "v": "ᵥ", "x": "ₓ",
-}
+};
 
 const math_letters = {
   "a": "𝑎", "A": "𝐴", "b": "𝑏", "B": "𝐵", "c": "𝑐", "C": "𝐶", "d": "𝑑",
@@ -42,7 +42,7 @@ const math_letters = {
   "R": "𝑅", "s": "𝑠", "S": "𝑆", "t": "𝑡", "T": "𝑇", "u": "𝑢", "U": "𝑈",
   "v": "𝑣", "V": "𝑉", "w": "𝑤", "W": "𝑊", "x": "𝑥", "X": "𝑋", "y": "𝑦",
   "Y": "𝑌", "z": "𝑧", "Z": "𝑍",
-}
+};
 
 const blackboard_letters = {
   "a": "𝕒", "A": "𝔸", "b": "𝕓", "B": "𝔹", "c": "𝕔", "C": "ℂ", "d": "𝕕",
@@ -54,7 +54,7 @@ const blackboard_letters = {
   "v": "𝕧", "V": "𝕍", "x": "𝕩", "X": "𝕏", "y": "𝕪", "Y": "𝕐", "z": "𝕫",
   "Z": "ℤ", "0": "𝟘", "1": "𝟙", "2": "𝟚", "3": "𝟛", "4": "𝟜", "5": "𝟝",
   "6": "𝟞", "7": "𝟟", "8": "𝟠", "9": "𝟡",
-}
+};
 
 const fraktur_letters = {
   "a": "𝔞", "A": "𝔄", "b": "𝔟", "B": "𝔅", "c": "𝔠", "C": "ℭ", "d": "𝔡",
@@ -65,7 +65,7 @@ const fraktur_letters = {
   "R": "ℜ", "s": "𝔰", "S": "𝔖", "t": "𝔱", "T": "𝔗", "u": "𝔲", "U": "𝔘",
   "v": "𝔳", "V": "𝔙", "x": "𝔵", "X": "𝔛", "y": "𝔶", "Y": "𝔜", "z": "𝔷",
   "Z": "ℨ",
-}
+};
 
 const script_letters = {
   "a": "𝒶", "A": "𝒜", "b": "𝒷", "B": "ℬ", "c": "𝒸", "C": "𝒞", "d": "𝒹",
@@ -76,7 +76,7 @@ const script_letters = {
   "R": "ℛ", "s": "𝓈", "S": "𝒮", "t": "𝓉", "T": "𝒯", "u": "𝓊", "U": "𝒰",
   "v": "𝓋", "V": "𝒱", "w": "𝓌", "W": "𝒲", "x": "𝓍", "X": "𝒳", "y": "𝓎",
   "Y": "𝒴", "z": "𝓏", "Z": "𝒵",
-}
+};
 
 const calligraphic_letters = {
   "a": "𝓪", "A": "𝓐", "b": "𝓫", "B": "𝓑", "c": "𝓬", "C": "𝓒", "d": "𝓭",
@@ -87,7 +87,7 @@ const calligraphic_letters = {
   "R": "𝓡", "s": "𝓼", "S": "𝓢", "t": "𝓽", "T": "𝓣", "u": "𝓾", "U": "𝓤",
   "v": "𝓿", "V": "𝓥", "w": "𝔀", "W": "𝓦", "x": "𝔁", "X": "𝓧", "y": "𝔂",
   "Y": "𝓨", "z": "𝔃", "Z": "𝓩",
-}
+};
 
 const italic_letters = {
   "a": "𝘢", "A": "𝘈", "b": "𝘣", "B": "𝘉", "c": "𝘤", "C": "𝘊", "d": "𝘥",
@@ -107,7 +107,7 @@ const italic_letters = {
   "𝗥": "𝙍", "𝘀": "𝙨", "𝗦": "𝙎", "𝘁": "𝙩", "𝗧": "𝙏", "𝘂": "𝙪", "𝗨": "𝙐",
   "𝘃": "𝙫", "𝗩": "𝙑", "𝘄": "𝙬", "𝗪": "𝙒", "𝘅": "𝙭", "𝗫": "𝙓", "𝘆": "𝙮",
   "𝗬": "𝙔", "𝘇": "𝙯", "𝗭": "𝙕",
-}
+};
 
 const bold_letters = {
   "a": "𝗮", "A": "𝗔", "b": "𝗯", "B": "𝗕", "c": "𝗰", "C": "𝗖", "d": "𝗱",
@@ -127,7 +127,159 @@ const bold_letters = {
   "𝘙": "𝙍", "𝘴": "𝙨", "𝘚": "𝙎", "𝘵": "𝙩", "𝘛": "𝙏", "𝘶": "𝙪", "𝘜": "𝙐",
   "𝘷": "𝙫", "𝘝": "𝙑", "𝘸": "𝙬", "𝘞": "𝙒", "𝘹": "𝙭", "𝘟": "𝙓", "𝘺": "𝙮",
   "𝘠": "𝙔", "𝘻": "𝙯", "𝘡": "𝙕",
-}
+};
+
+const emoji = {
+  "grin": "😀",
+  "grin-2": "😃",
+  "grin-3": "😄",
+  "beam": "😁",
+  "grin-squint": "😆",
+  "grin-swear": "😅",
+  "rofl": "🤣",
+  "joy": "😂",
+  "slight-smile": "🙂",
+  "upside-down": "🙃",
+  "wink": "😉",
+  "smile2": "😊",
+  "halo": "😇",
+  "smile-hearts": "🥰",
+  "love": "😍",
+  "starstruck": "🤩",
+  "blow-kiss": "😘",
+  "kiss": "😗",
+  "smile": "☺",
+  "kiss-2": "😚",
+  "kiss-3": "😙",
+  "savor": "😋",
+  "tongue": "😛",
+  "wink-tongue": "😜",
+  "zany": "🤪",
+  "squint-tongue": "😝",
+  "money-mouth": "🤑",
+  "hug": "🤗",
+  "face-with-hand-over-mouth": "🤭",
+  "shush": "🤫",
+  "thinking": "🤔",
+  "zipper-mouth": "🤐",
+  "face-with-raised-eyebrow": "🤨",
+  "neutral": "😐",
+  "expressionless": "😑",
+  "blank": "😶",
+  "smirk": "😏",
+  "unamused": "😒",
+  "eye-roll": "🙄",
+  "grimace": "😬",
+  "lying": "🤥",
+  "relieved": "😌",
+  "pensive": "😔",
+  "sleepy": "😪",
+  "drooling": "🤤",
+  "sleeping": "😴",
+  "face-with-medical-mask": "😷",
+  "face-with-thermometer": "🤒",
+  "face-with-head-bandage": "🤕",
+  "nauseated": "🤢",
+  "vomiting": "🤮",
+  "sneezing": "🤧",
+  "hot": "🥵",
+  "cold": "🥶",
+  "woozy": "🥴",
+  "dizzy ": "😵",
+  "exploding-head": "🤯",
+  "cowboy": "🤠",
+  "partying": "🥳",
+  "sunglasses": "😎",
+  "nerd": "🤓",
+  "monocle": "🧐",
+  "confused": "😕",
+  "worried": "😟",
+  "slightly-frowning-face": "🙁",
+  "frowning": "☹",
+  "face-with-open-mouth": "😮",
+  "hushed": "😯",
+  "astonished": "😲",
+  "flushed": "😳",
+  "pleading": "🥺",
+  "frowning-face-with-open-mouth": "😦",
+  "anguished": "😧",
+  "fearful": "😨",
+  "anxious-face-with-sweat": "😰",
+  "sad-but-relieved-face": "😥",
+  "crying": "😢",
+  "loudly-crying": "😭",
+  "screaming-in-fear": "😱",
+  "confounded": "😖",
+  "persevering": "😣",
+  "disappointed": "😞",
+  "downcast-face-with-sweat": "😓",
+  "weary": "😩",
+  "tired": "😫",
+  "yawning": "🥱",
+  "face-with-steam-from-nose": "😤",
+  "outing": "😡",
+  "angry": "😠",
+  "cursing": "🤬",
+  "smiling-devil": "😈",
+  "angry-devil": "👿",
+  "skull": "💀",
+  "skull-and-crossbones": "☠",
+  "poop": "💩",
+  "clown": "🤡",
+  "ogre": "👹",
+  "goblin": "👺",
+  "ghost": "👻",
+  "alien": "👽",
+  "alien-monster": "👾",
+  "robot": "🤖",
+  "grinning-cat": "😺",
+  "grinning-cat-with-smiling eyes": "😸",
+  "cat-with-tears-of-joy": "😹",
+  "smiling-cat-with-heart-eyes": "😻",
+  "cat-with-wry-smile": "😼",
+  "kissing-cat": "😽",
+  "weary-cat": "🙀",
+  "crying-cat": "😿",
+  "pouting-cat": "😾",
+  "see-no-evil": "🙈",
+  "hear-no-evil": "🙉",
+  "speak-no-evil": "🙊",
+  "kiss-mark": "💋",
+  "love-letter": "💌",
+  "heart-with-arrow": "💘",
+  "heart-with-ribbon": "💝",
+  "sparkling-heart": "💖",
+  "growing-heart": "💗",
+  "beating-heart": "💓",
+  "revolving-hearts": "💞",
+  "two-hearts": "💕",
+  "heart-decoration": "💟",
+  "heart-exclamation": "❣",
+  "broken-heart": "💔",
+  "red-heart": "❤",
+  "orange-heart": "🧡",
+  "yellow-heart": "💛",
+  "green-heart": "💚",
+  "blue-heart": "💙",
+  "purple-heart": "💜",
+  "brown-heart": "🤎",
+  "black-heart": "🖤",
+  "white-heart": "🤍",
+  "100": "💯",
+  "danger-symbol": "💢",
+  "collision": "💥",
+  "dizzy": "💫",
+  "sweat-droplets": "💦",
+  "dashing-away": "💨",
+  "hole": "🕳",
+  "bomb": "💣",
+  "speech-balloon": "💬",
+  "eye-in-speech-bubble": "👁",
+  "left-speech-bubble": "🗨",
+  "right-anger-bubble": "🗯",
+  "thought-balloon": "💭",
+  "zzz": "💤",
+};
 
 
 
@@ -393,4 +545,18 @@ const preset_latex = registerPreset({
     "_"         : text => doReplacements(text, subscripts),
     "^"         : text => doReplacements(text, superscripts),
   },
+});
+
+
+
+// == Emoji Preset == //
+
+const emoji_replacements = {};
+for (const em in emoji)
+  emoji_replacements[":" + em + ":"] = emoji[em];
+
+const preset_emoji = registerPreset({
+  "name": "Emoji",
+  "replacements": emoji_replacements,
+  "commands": {},
 });
