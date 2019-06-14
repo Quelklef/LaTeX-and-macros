@@ -190,7 +190,7 @@ chrome.storage.sync.get(['enabledPresets', 'customReplacements', 'customCommands
     for (let i = 0; i < replacementKeys.length; i++) {
       const key = replacementKeys[i];
       // Skip if ambiguous and STILL ambiguous after another letter
-      if (ambiguous(key) && !content[n] || ambiguous(key + content[n])) continue;
+      if (ambiguous(key) && (!content[n] || curPos === n || ambiguous(key + content[n]))) continue;
       if (n - key.length < anchor) continue;
       const from = key;
       const to = replacements[key];
