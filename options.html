@@ -125,7 +125,7 @@ input:focus, textarea:focus { border: 1px solid black; }
     <textarea id="custom-replacements"></textarea>
 
     <h3>Custom Commands</h3>
-    <p>Custom commands are single-argument functions accept and return text. A custom function <code>\f</code> is invoked like <code>\f{input text}</code>. To create your own custom commands, write JavaScript code below, calling <code>defCommand(commandName, command)</code> for ech command. For instance, `defCommand("\\uppercase", text => text.toUpperCase())` creates a command that turns text uppercase; it would then be used like <code>\uppercase{some text}</code> which would produce <code>SOME TEXT</code>.</p>
+    <p>Custom commands are single-argument functions accept and return text. A custom function <code>\f</code> is invoked like <code>\f{input text}</code>. To create your own custom commands, write JavaScript code below, calling <code>defCommand(commandName, command)</code> for ech command. For instance, <code>defCommand("\\uppercase", text => text.toUpperCase())</code> creates a command that turns text uppercase; it would then be used like <code>\uppercase{some text}</code> which would produce <code>SOME TEXT</code>.</p>
     <textarea id="custom-commands">// Write javascript here, e.g..
 //defCommand('\\uppercase', text => text.toUpperCase());</textarea>
 

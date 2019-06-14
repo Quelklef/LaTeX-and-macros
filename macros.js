@@ -1,4 +1,4 @@
-chrome.storage.sync.get(['enabledPresets', 'customReplacements', 'customCommands'], items => {
+chrome.storage.sync.get(['enabledPresets', 'customReplacements', 'customCommands', 'timeout', 'lookbehind'], items => {
   // Macros come in two flavors:
   // replacements, which are straight text replacements,
   // and commands, like \this{}, which are single-input JS functions
@@ -165,7 +165,7 @@ chrome.storage.sync.get(['enabledPresets', 'customReplacements', 'customCommands
     }
     anchor = Math.min(anchor, curPos, getContent($focus).length - 1);
     lastKeypressTime = curTime;
-    
+
     // If the person is typing fast, we may have missed a cursor position or two
     // Account for this by backtracking and retesting for replacementKeys
     for (let i = 0; i <= lookbehind; i++) {
