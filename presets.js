@@ -7,7 +7,7 @@ function doReplacements(text, dict) {
 
 const presets = {};
 function registerPreset(preset) {
-  presets[preset.name] = preset;
+  presets[preset.id] = preset;
   return preset;
 }
 
@@ -283,10 +283,22 @@ const emoji = {
 
 
 
+
+/*
+
+Presets should have the following attributes:
+- name: pretty name e.g. to be seen by users
+- id: arbitrary unique string that should not change version-to-version
+- replacements: object of replacmeents
+- commands: object of commands
+
+*/
+
 // == General Symbol Preset == //
 
 const preset_general = registerPreset({
   "name": "General Symbols",
+  "id": "general",
   "replacements": {
     "--": "—",
     "->": "→",
@@ -302,7 +314,8 @@ const preset_general = registerPreset({
 // == Sub- and Super-script Preset == //
 
 const preset_sub_super = registerPreset({
-  "name": "Sub/Super Scripts",
+  "name": "Sub- & Super- Scripts",
+  "id": "sub super scripts",
   "replacements": {},
   "commands": {},
 });
@@ -321,6 +334,7 @@ for (const letter in math_letters)
 
 const preset_latex = registerPreset({
   "name": "LaTeX/Math",
+  "id": "latex math",
   "replacements": {
     ...preset_sub_super.replacements,
     ...math_letter_replacements,
@@ -557,6 +571,7 @@ for (const em in emoji)
 
 const preset_emoji = registerPreset({
   "name": "Emoji",
+  "id": "emoji",
   "replacements": emoji_replacements,
   "commands": {},
 });

@@ -14,6 +14,12 @@ chrome.storage.sync.get(['enabledPresets', 'customReplacements', 'customCommands
   for (const presetName of items.enabledPresets) {
     const preset = presets[presetName];
 
+    if (!preset) {
+      console.log(`Warning: Invalid preset ID '${presetName}' in enabled presets`);
+      // Skip it
+      continue;
+    }
+
     for (const key in preset.replacements)
       replacements[key] = preset.replacements[key];
     for (const key in preset.commands)

@@ -1,6 +1,6 @@
 chrome.runtime.onInstalled.addListener(function() {
   chrome.storage.sync.set({
-    'enabledPresets': [],
+    'enabledPresets': ['latex math'],
     'customReplacements': {},
     'customCommands': '',
   });

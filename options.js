@@ -24,7 +24,7 @@ window.addEventListener('load', function() {
     <div class="preset">
 
       <div class="accordian-title">
-        <h3><input type="checkbox" class="enable-box" name="${preset.name}"> ${preset.name}</h3>
+        <h3><input type="checkbox" class="enable-box" name="${preset.id}"> ${preset.name}</h3>
       </div>
 
       <div class="cols accordian-content">
