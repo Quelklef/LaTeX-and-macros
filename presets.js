@@ -570,7 +570,7 @@ const preset_latex = registerPreset({
     "\\mathcal" : text => doReplacements(text, calligraphic_letters),
     "\\textit"  : text => doReplacements(text, italic_letters),
     "\\textbf"  : text => doReplacements(text, bold_letters),
-    "\\textttt" : text => doReplacements(text, monospace_letters),
+    "\\texttt"  : text => doReplacements(text, monospace_letters),
     "_"         : text => doReplacements(text, subscripts),
     "^"         : text => doReplacements(text, superscripts),
   },
