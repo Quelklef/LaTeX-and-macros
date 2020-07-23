@@ -1,7 +1,7 @@
 {
-  "name": "LaTeX and Macros",
+  "name": "Text Macros & LaTeX",
   "version": "1.3.11",
-  "description": "Write basic LaTeX and custom text replacement rules",
+  "description": "Text macros and a LaTeX preset",
   "permissions": [
     "storage"
   ],
@@ -13,8 +13,9 @@
       "matches": ["*://*/*"],
       "css": [],
       "js": [
+        "macros.js",
         "presets.js",
-        "macros.js"
+        "pagescript.js"
       ]
     }
   ],

@@ -5,23 +5,16 @@
 body {
   display: flex;
   justify-content: center;
-
-  padding-bottom: 600px;
+  padding-bottom: 400px;
 }
 
-h1 {
-  margin: 40px 0;
-}
-h2 {
-  margin: 40px 0 20px 0;
-}
+h1 { margin: 60px 0 1em 0; }
+h2 { margin: 40px 0 1em 0; }
+h3 { margin: 20px 0 1em 0; }
 
 #wrap {
-  width: 1000px;
+  width: 800px;
   line-height: 1.7em;
-}
-td {
-  font-size: 12px;
 }
 
 .cols {
@@ -50,9 +43,8 @@ td {
   cursor: pointer;
   padding: 10px 15px;
   background: rgba(0, 0, 0, 0.05);
+  margin: 0;
 }
-
-.accordian-title h3 { margin: 0; }
 
 .accordian-title:not(.show-content) + .accordian-content {
   height: 0;
@@ -62,21 +54,9 @@ td {
 .accordian-title.show-content + .accordian-content {
   padding: 10px 25px;
 }
-h4 { margin: 0 0 5px 0; }
 
-code {
-  background-color: rgba(0, 0, 0, 0.05);
-  padding: 4px;
-}
 
-textarea {
-  width: 100%;
-  min-height: 300px;
-}
-
-h3 { margin-top: 20px; }
-
-.accordian-title h3:after {
+.accordian-title:after {
   content: '';
   border: 6px solid transparent;
   border-top-color: black;
@@ -85,16 +65,22 @@ h3 { margin-top: 20px; }
   top: 11px;
   left: 8px;
 }
-.accordian-title.show-content h3:after {
+.accordian-title.show-content:after {
   border-top-color: transparent;
   border-bottom-color: black;
 
   top: -11px;
 }
 
-textarea:focus { outline: none; }
+code {
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 2px 4px;
+}
 
 textarea {
+  width: 100%;
+  min-height: 300px;
   padding: 8px;
 }
 
@@ -102,7 +88,6 @@ input[type=number] {
   width: 100px;
   padding: 3px 5px;
 }
-input:focus { outline: none; }
 
 input, textarea { border: 1px solid rgba(0, 0, 0, 0.2); }
 input:hover, textarea:hover { border: 1px solid rgba(0, 0, 0, 0.4); }
@@ -115,41 +100,34 @@ input:focus, textarea:focus { border: 1px solid black; }
   <div id="wrap">
     <h1>LaTeX and Macros Configuration</h1>
 
-    <h2>Preset Macros</h2>
-    <div id="presets">
-    </div>
+    <h2>Presets</h2>
+    <div id="presets"></div>
 
     <h2>Custom Macros</h2>
-    <h3>Custom Replacements</h3>
-    <p>Enter custom replacement rules below. There should be one per line, in the form <code>FROM -&gt; TO</code>, e.g. <code>\therefore -> &there4;</code>. If either the <code>FROM</code> or <code>TO</code> sections of the rule contain the text <code>-&gt;</code>, it should be written as <code>-\&gt;</code>, and <code>\</code> should be written as <code>\\</code>. The space around the <code>-></code> is required.</p>
-    <textarea id="custom-replacements"></textarea>
-
-    <h3>Custom Commands</h3>
-    <p>Custom commands are single-argument functions accept and return text. A custom function <code>\f</code> is invoked like <code>\f{input text}</code>. To create your own custom commands, write JavaScript code below, calling <code>defCommand(commandName, command)</code> for ech command. For instance, <code>defCommand("\\uppercase", text => text.toUpperCase())</code> creates a command that turns text uppercase; it would then be used like <code>\uppercase{some text}</code> which would produce <code>SOME TEXT</code>.</p>
-    <textarea id="custom-commands">// Write javascript here, e.g..
-//defCommand('\\uppercase', text => text.toUpperCase());</textarea>
+    <textarea id="custom-macros"></textarea>
 
     <h2>Settings</h2>
-
     <div class="cols">
       <div>
-      <p><b>Timeout</b></p>
-      <input type="number" id="timeout" min="0" step="1" />
-      <p><em>Timeout</em> is the tolerance to slow typing. It is the number of milliseconds of no typing tolerated, after which the current command will end. So if you type <code>\alp</code>, wait a bit, and then type <code>ha</code>, the command <code>\alpha</code> will only be invoked if the time you waited was &leq; <em>timeout</em>.</p>
+        <h3>Timeout</h3>
+        <input type="number" id="timeout" min="0" step="1" />
+        <p><i>Recommended: 500-3000</i></p>
+        <p><em>Timeout</em> is the tolerance to slow typing. It is the maximum number of milliseconds tolerated between keystrokes in a single macro.</p>
+        <p>In other words, if you type <code>:smi</code>, wait a bit, and then type <code>le:</code>, the <code>:smile:</code> macro will be recognized only if the pause was a duration of time less than or equal to <em>timeout</em>.</p>
       </div>
 
       <div>
-      <p><b>Lookbehind</b></p>
-      <input type="number" id="lookbehind" min="1" step="1" />
-      <p><em>Lookbehind</em> is the tolerance to fast typing. It is the number of characters that will be checked behind the cursor for macros. Sometimes, a keypress will be missed, so that you may type <code>\alpha</code> but it is not recognized. Lookbehind means that if you continue typing, say, typing a space to result in <code>\alpha </code>, when you type the space, the extension will go back and <em>re-</em>check <code>\alpha</code>, recognize it, and invoke it.</p>
-      <p>Some of the extension's functionality requires lookbehind to be 1 or above, so don't set it below 1.</p>
+        <h3>Lookbehind</h3>
+        <input type="number" id="lookbehind" min="1" step="1" />
+        <p><i>Recommended: 1-4. Must be &gt;0.</i></p>
+        <p><em>Lookbehind</em> is the tolerance to fast typing. It is the number of characters that will be checked behind the cursor for macros in order to account for occasional dropped keys.</p>
+        <p>The extension will sometimes miss keystrokes. If you type <code>:cowboy:</code>, the final <code>:</code> may be missed, and so the macro will not be recognized. To account for this, the extension will look <em>lookbehind</em> characters behind the caret for macros.</p>
       </div>
     </div>
 
-  </div>
-
-  <script src="presets.js" type="text/javascript" charset="utf-8"></script>
-  <script src="options.js"></script>
+    <script src="macros.js"></script>
+    <script src="presets.js" charset="utf-8"></script>
+    <script src="options.js"></script>
 
   </body>
 </html>

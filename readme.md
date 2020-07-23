@@ -1,4 +1,4 @@
-# LaTeX and Macros
+# Text Macros & LaTeX
 
 _... Because all the other extensions sucked_
 
