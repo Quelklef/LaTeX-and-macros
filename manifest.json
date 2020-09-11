@@ -20,5 +20,10 @@
     }
   ],
   "options_page": "options.html",
-  "manifest_version": 2
+  "manifest_version": 2,
+  "icons": {
+    "16": "icons/ico16.png",
+    "48": "icons/ico48.png",
+    "128": "icons/ico128.png"
+  }
 }
