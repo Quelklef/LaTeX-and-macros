@@ -83,6 +83,7 @@ chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehin
     }
   }
 
+  /* set caret position */
   function ed_setCaretOffset(node, idx) {
     switch (ed_kind(node)) {
       case 'text': document.getSelection().collapse(node, idx); break;
@@ -92,45 +93,64 @@ chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehin
 
   // == Event Handling == //
 
+  // The element that we're typing in
   let target = null;
+  // The position of the 'anchor', which is the dual to the caret,
+  // together representing the range in which we will be performing
+  // text transformations
   let anchorOffset = 0;
+  // The last time a key was pressed in the target
   let lastKeypressTime = 0;
-  
+
+  function getCurrentTarget() {
+    const sel = document.getSelection();
+    if (sel && sel.focusNode && ed_isEditable(sel.focusNode))
+      return sel.focusNode;
+    if (ed_isEditable(document.activeElement))
+      return document.activeElement;
+    return null;
+  }
+
+  // Collapse the anchor to the caret
+  function collapse() {
+    const caretOffset = ed_getCaretOffset(target);
+    anchorOffset = caretOffset;
+    anchorOffset = Math.min(anchorOffset, ed_getContent(target).length);
+  }
+
   ['keydown', 'click'].forEach(eventName => document.addEventListener(eventName, () => {
 
-    const newTarget = (() => {
-      const sel = document.getSelection();
-      if (sel && sel.focusNode && ed_isEditable(sel.focusNode))
-        return sel.focusNode;
-      if (ed_isEditable(document.activeElement))
-        return document.activeElement;
-      return null;
-    })();
+    // Detect if the target has changed
+    const newTarget = getCurrentTarget();
+    if (newTarget && newTarget !== target) {
+      target = newTarget;
+      collapse();
+      return;
+    }
 
-    if (!newTarget) return;
-      
+    if (!target) return;
+    const caretOffset = ed_getCaretOffset(target);
+
     const now = Date.now();
 
-    if (newTarget !== target) {
-      target = newTarget;
-      const caretOffset = ed_getCaretOffset(target);
-      anchorOffset = caretOffset;
-    } else if (now - lastKeypressTime > retrieved.timeout) {
-      const caretOffset = ed_getCaretOffset(target);
-      anchorOffset = caretOffset;
-      anchorOffset = Math.min(anchorOffset, ed_getContent(target).length);
-    } else if (['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown'].includes(event.key) || caretOffset < anchorOffset) {
-      anchorOffset = caretOffset;
-    }
-    
+    if (
+      // enough time has passed
+      now - lastKeypressTime > retrieved.timeout
+      // or arrow key pressed
+      || ['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown'].includes(event.key)
+      // or caret preceeds anchor
+      || caretOffset < anchorOffset
+    )
+      collapse();
+
     lastKeypressTime = now;
-    
+
   }));
 
   document.addEventListener("keyup", () => {
 
     if (!target) return;
-    
+
     const caretOffset = ed_getCaretOffset(target);
     const text = ed_getContent(target);
 
@@ -145,7 +165,7 @@ chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehin
         }
       }
     }
-    
+
     for (const { candidate, candidateStart, candidateEnd } of candidates()) {
       // Skip if ambiguous and the next letter of the text doesn't resolve the ambiguity
       if (isAmbiguous(candidate) && (!text[candidateEnd + 1] || isAmbiguous(candidate + text[candidateEnd + 1]))) continue;

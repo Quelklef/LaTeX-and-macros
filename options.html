@@ -29,11 +29,6 @@ h3 { margin: 20px 0 1em 0; }
   margin-left: 10px;
 }
 
-.peek {
-  max-height: 300px;
-  overflow-y: auto;
-}
-
 .preset {
   border: 1px solid lightgrey;
   margin: 10px 0;
@@ -111,7 +106,7 @@ input:focus, textarea:focus { border: 1px solid black; }
       <div>
         <h3>Timeout</h3>
         <input type="number" id="timeout" min="0" step="1" />
-        <p><i>Recommended: 500-3000</i></p>
+        <p><i>Recommended: 500-3000. Must be &ge;0.</i></p>
         <p><em>Timeout</em> is the tolerance to slow typing. It is the maximum number of milliseconds tolerated between keystrokes in a single macro.</p>
         <p>In other words, if you type <code>:smi</code>, wait a bit, and then type <code>le:</code>, the <code>:smile:</code> macro will be recognized only if the pause was a duration of time less than or equal to <em>timeout</em>.</p>
       </div>
@@ -119,7 +114,7 @@ input:focus, textarea:focus { border: 1px solid black; }
       <div>
         <h3>Lookbehind</h3>
         <input type="number" id="lookbehind" min="1" step="1" />
-        <p><i>Recommended: 1-4. Must be &gt;0.</i></p>
+        <p><i>Recommended: 1-4. Must be &ge;1.</i></p>
         <p><em>Lookbehind</em> is the tolerance to fast typing. It is the number of characters that will be checked behind the cursor for macros in order to account for occasional dropped keys.</p>
         <p>The extension will sometimes miss keystrokes. If you type <code>:cowboy:</code>, the final <code>:</code> may be missed, and so the macro will not be recognized. To account for this, the extension will look <em>lookbehind</em> characters behind the caret for macros.</p>
       </div>
@@ -127,6 +122,7 @@ input:focus, textarea:focus { border: 1px solid black; }
 
     <script src="macros.js"></script>
     <script src="presets.js" charset="utf-8"></script>
+
     <script src="options.js"></script>
 
   </body>
