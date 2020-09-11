@@ -96,7 +96,7 @@ chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehin
   let anchorOffset = 0;
   let lastKeypressTime = 0;
   
-  document.addEventListener("keydown", () => {
+  ['keydown', 'click'].forEach(eventName => document.addEventListener(eventName, () => {
 
     const newTarget = (() => {
       const sel = document.getSelection();
@@ -115,17 +115,17 @@ chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehin
       target = newTarget;
       const caretOffset = ed_getCaretOffset(target);
       anchorOffset = caretOffset;
-    } else {
-      if (now - lastKeypressTime > retrieved.timeout) {
-        const caretOffset = ed_getCaretOffset(target);
-        anchorOffset = caretOffset;
-        anchorOffset = Math.min(anchorOffset, ed_getContent(target).length);
-      }
+    } else if (now - lastKeypressTime > retrieved.timeout) {
+      const caretOffset = ed_getCaretOffset(target);
+      anchorOffset = caretOffset;
+      anchorOffset = Math.min(anchorOffset, ed_getContent(target).length);
+    } else if (['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown'].includes(event.key) || caretOffset < anchorOffset) {
+      anchorOffset = caretOffset;
     }
     
     lastKeypressTime = now;
     
-  });
+  }));
 
   document.addEventListener("keyup", () => {
 
@@ -137,7 +137,7 @@ chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehin
     // Generate the text slices that we will test for being macros
     function* candidates() {
       for (let truncateAmt = 0; truncateAmt <= retrieved.lookbehind; truncateAmt++) {
-        for (let candidateLength = 1; candidateLength <= caretOffset - truncateAmt - anchorOffset; candidateLength++) {
+        for (let candidateLength = caretOffset - truncateAmt - anchorOffset; candidateLength >= 1; candidateLength--) {
           const candidateStart = caretOffset - truncateAmt - candidateLength;
           const candidateEnd = caretOffset - truncateAmt - 1;
           const candidate = text.slice(candidateStart, candidateEnd + 1);
@@ -162,6 +162,7 @@ chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehin
         if (result !== undefined) {
           ed_setContent(target, result);
           ed_setCaretOffset(target, caretOffset + (result.length - text.length));
+          anchorOffset = caretOffset;
           break;
         }
       }

@@ -341,15 +341,10 @@ registerPreset({
 
 {
 
-const charMacros = [];
-for (const [char, replacement] of Object.entries(mathFont))
-  charMacros.push(macro('simple', '\\' + char, replacement));
-
 registerPreset({
-  name: "LaTeX Math",
+  name: "LaTeX",
   id: "latex",
   macros: [
-    ...charMacros,
 
     macro('simple', "\\alpha"  , "α"), macro('simple', "\\Alpha"  , "Α"),
     macro('simple', "\\beta"   , "β"), macro('simple', "\\Beta"   , "Β"),
@@ -570,6 +565,34 @@ registerPreset({
     macro('curly', "\\texttt"  , text => doReplacements(text, monospaceFont)),
     macro('curly', "_"         , text => doReplacements(text, subscripts)),
     macro('curly', "^"         , text => doReplacements(text, superscripts)),
+  ],
+});
+
+}
+
+
+{
+
+const charMacros = [];
+for (const [char, replacement] of Object.entries(mathFont))
+  charMacros.push(macro('simple', '\\' + char, replacement));
+
+registerPreset({
+  name: 'Other Math',
+  id: 'math',
+
+  macros: [
+    
+    ...charMacros,
+
+    macro('simple', '\\bbR', 'ℝ'),
+    macro('simple', '\\bbQ', 'ℚ'),
+    macro('simple', '\\bbN', 'ℕ'),
+    macro('simple', '\\bbZ', 'ℤ'),
+    macro('simple', '\\bbC', 'ℂ'),
+    macro('simple', '\\bbH', 'ℍ'),
+    macro('simple', '\\bbP', 'ℙ'),
+    
   ],
 });
 

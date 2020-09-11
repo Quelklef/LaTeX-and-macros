@@ -15,7 +15,7 @@
       "js": [
         "macros.js",
         "presets.js",
-        "pagescript.js"
+        "runtime.js"
       ]
     }
   ],
