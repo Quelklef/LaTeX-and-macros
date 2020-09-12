@@ -1,4 +1,5 @@
 {
+  "manifest_version": 2,
   "name": "Text Macros & LaTeX",
   "version": "1.3.11",
   "description": "Text macros and a LaTeX preset",
@@ -6,7 +7,10 @@
     "storage"
   ],
   "background": {
-    "scripts": ["onInstalled.js"]
+    "scripts": [
+      "onInstalled.js",
+      "iconController.js"
+    ]
   },
   "content_scripts": [
     {
@@ -20,10 +24,11 @@
     }
   ],
   "options_page": "options.html",
-  "manifest_version": 2,
+  "browser_action": {
+    "default_icon": "icon-128x.png",
+    "default_title": "Macros and LaTeX"
+  },
   "icons": {
-    "16": "icons/ico16.png",
-    "48": "icons/ico48.png",
-    "128": "icons/ico128.png"
+    "128": "icon-128x.png"
   }
 }

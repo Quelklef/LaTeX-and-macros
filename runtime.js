@@ -6,6 +6,15 @@ function letIn(x, f) {
   return f(x);
 }
 
+let extEnabled = true;
+
+document.addEventListener('keydown', event => {
+  if (event.ctrlKey && !event.altKey && !event.shiftKey && event.key === 'm') {
+    extEnabled = !extEnabled;
+    chrome.runtime.sendMessage({ setIconGrayscale: !extEnabled });
+  }
+});
+
 chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehind'], retrieved => {
   // Macros come in two flavors:
   // replacements, which are straight text replacements,
@@ -120,6 +129,8 @@ chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehin
 
   ['keydown', 'click'].forEach(eventName => document.addEventListener(eventName, () => {
 
+    if (!extEnabled) return;
+
     // Detect if the target has changed
     const newTarget = getCurrentTarget();
     if (newTarget && newTarget !== target) {
@@ -148,6 +159,8 @@ chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehin
   }));
 
   document.addEventListener("keyup", () => {
+
+    if (!extEnabled) return;
 
     if (!target) return;
 
