@@ -109,36 +109,59 @@ chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehin
   // text transformations
   let anchorOffset = 0;
   // The last time a key was pressed in the target
-  let lastKeypressTime = 0;
-
-  function getCurrentTarget() {
-    const sel = document.getSelection();
-    if (sel && sel.focusNode && ed_isEditable(sel.focusNode))
-      return sel.focusNode;
-    if (ed_isEditable(document.activeElement))
-      return document.activeElement;
-    return null;
-  }
+  let lastKeypressTime = null;
 
   // Collapse the anchor to the caret
   function collapse() {
+    if (!target) return;
     const caretOffset = ed_getCaretOffset(target);
     anchorOffset = caretOffset;
     anchorOffset = Math.min(anchorOffset, ed_getContent(target).length);
   }
 
-  ['keydown', 'click'].forEach(eventName => document.addEventListener(eventName, () => {
+  { /*
+    Handle target changes.
+    When the user focuses on a new element, we need to update `target` as well
+    as the caret and anchor offsets.
+    The obvious strategy is to check on each keypress to see if the focus has changed
+    and, if so, update `target` and offsets accordingly.
+    However, our strategy will instead be to update `target` on every keypress, but only
+    update the offsets on click and Tab press.
+    This is because Twitter (and therefore perhaps some other sites, too)
+    does some weird shit where the tweet box turns into a new element after
+    the first character insertion. In this case, we want to update `target`
+    but not the offsets.
+    To remedy this, we will restrict offset updates to events which are definitely
+    changes of focus, like clicks and Tab presses.
+    */
 
-    if (!extEnabled) return;
+    // Check for new target on keydown
+    document.addEventListener('keydown', () => {
+      const newTarget = (() => {
+        const sel = document.getSelection();
+        if (sel && sel.focusNode && ed_isEditable(sel.focusNode))
+          return sel.focusNode;
+        if (ed_isEditable(document.activeElement))
+          return document.activeElement;
+        return null;
+      })();
 
-    // Detect if the target has changed
-    const newTarget = getCurrentTarget();
-    if (newTarget && newTarget !== target) {
-      target = newTarget;
+      if (newTarget && newTarget !== target) {
+        target = newTarget;
+        return;
+      }
+    });
+
+    // Update offsets on click and Tab press
+    ['click', 'keydown'].forEach(eventName => document.addEventListener(eventName, event => {
+      if (event instanceof KeyboardEvent && event.key !== 'Tab') return;
       collapse();
-      return;
-    }
+    }));
 
+  }
+
+  document.addEventListener('keydown', () => {
+    if (!extEnabled) return;
     if (!target) return;
     const caretOffset = ed_getCaretOffset(target);
 
@@ -146,7 +169,7 @@ chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehin
 
     if (
       // enough time has passed
-      now - lastKeypressTime > retrieved.timeout
+      lastKeypressTime !== null && now - lastKeypressTime > retrieved.timeout
       // or arrow key pressed
       || ['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown'].includes(event.key)
       // or caret preceeds anchor
@@ -155,13 +178,10 @@ chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehin
       collapse();
 
     lastKeypressTime = now;
-
-  }));
+  });
 
   document.addEventListener("keyup", () => {
-
     if (!extEnabled) return;
-
     if (!target) return;
 
     const caretOffset = ed_getCaretOffset(target);
@@ -200,7 +220,6 @@ chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehin
         }
       }
     }
-
   });
 
 });
