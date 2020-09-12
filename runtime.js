@@ -6,6 +6,10 @@ function letIn(x, f) {
   return f(x);
 }
 
+function clamp(x, [lo, hi]) {
+  return Math.max(lo, Math.min(x, hi));
+}
+
 let extEnabled = true;
 
 document.addEventListener('keydown', event => {
@@ -15,7 +19,17 @@ document.addEventListener('keydown', event => {
   }
 });
 
-chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehind'], retrieved => {
+// Proxy to .addEventListener, except that the listener will not be called while
+// the extension is disabled
+function addExtensionEventListener(target, eventName, listener, options) {
+  const conditionalListener = event => {
+    if (!extEnabled) return;
+    return listener(event);
+  }
+  return target.addEventListener(eventName, conditionalListener, options);
+}
+
+chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehind'], settings => {
   // Macros come in two flavors:
   // replacements, which are straight text replacements,
   // and commands, like \this{}, which are single-input JS functions
@@ -23,7 +37,7 @@ chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehin
 
   const macros = {};
 
-  for (const presetName of retrieved.enabledPresets) {
+  for (const presetName of settings.enabledPresets) {
     const preset = presets[presetName];
 
     if (!preset) {
@@ -37,7 +51,7 @@ chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehin
 
   {
     function register(type, name, arg) { macros[name] = macro(type, name, arg); }
-    eval(retrieved.customMacros || '');
+    eval(settings.customMacros || '');
   }
 
   // Call text 'ambiguous' if it is the prefix to more than one macro
@@ -112,11 +126,18 @@ chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehin
   let lastKeypressTime = null;
 
   // Collapse the anchor to the caret
-  function collapse() {
+  function collapseOffsets() {
     if (!target) return;
     const caretOffset = ed_getCaretOffset(target);
     anchorOffset = caretOffset;
-    anchorOffset = Math.min(anchorOffset, ed_getContent(target).length);
+  }
+
+  // Clamp the offsets to within valid bounds
+  function clampOffsets() {
+    if (!target) return;
+    const contentLength = ed_getContent(target).length;
+    anchorOffset = clamp(anchorOffset, [0, contentLength]);
+    caretOffset = clamp(caretOffset, [anchorOffset, contentLength]);
   }
 
   { /*
@@ -136,7 +157,7 @@ chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehin
     */
 
     // Check for new target on keydown
-    document.addEventListener('keydown', () => {
+    addExtensionEventListener(document, 'keydown', () => {
       const newTarget = (() => {
         const sel = document.getSelection();
         if (sel && sel.focusNode && ed_isEditable(sel.focusNode))
@@ -153,35 +174,35 @@ chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehin
     });
 
     // Update offsets on click and Tab press
-    ['click', 'keydown'].forEach(eventName => document.addEventListener(eventName, event => {
+    ['click', 'keydown'].forEach(eventName => addExtensionEventListener(document, eventName, event => {
       if (event instanceof KeyboardEvent && event.key !== 'Tab') return;
-      collapse();
+      collapseOffsets();
+      clampOffsets();
     }));
 
   }
 
-  document.addEventListener('keydown', () => {
-    if (!extEnabled) return;
+  addExtensionEventListener(document, 'keydown', () => {
     if (!target) return;
     const caretOffset = ed_getCaretOffset(target);
 
     const now = Date.now();
 
-    if (
-      // enough time has passed
-      lastKeypressTime !== null && now - lastKeypressTime > retrieved.timeout
-      // or arrow key pressed
-      || ['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown'].includes(event.key)
-      // or caret preceeds anchor
-      || caretOffset < anchorOffset
-    )
-      collapse();
+    // Once enough time has passed, collapse
+    if (lastKeypressTime !== null && now - lastKeypressTime > settings.timeout) {
+      collapseOffsets();
+    }
+
+    // If arrow keys have been pressed, ensure in bounds and collapse
+    if (['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown'].includes(event.key)) {
+      clampOffsets();
+      collapseOffsets();
+    }
 
     lastKeypressTime = now;
   });
 
-  document.addEventListener("keyup", () => {
-    if (!extEnabled) return;
+  addExtensionEventListener(document, "keyup", () => {
     if (!target) return;
 
     const caretOffset = ed_getCaretOffset(target);
@@ -189,7 +210,7 @@ chrome.storage.sync.get(['enabledPresets', 'customMacros', 'timeout', 'lookbehin
 
     // Generate the text slices that we will test for being macros
     function* candidates() {
-      for (let truncateAmt = 0; truncateAmt <= retrieved.lookbehind; truncateAmt++) {
+      for (let truncateAmt = 0; truncateAmt <= settings.lookbehind; truncateAmt++) {
         for (let candidateLength = caretOffset - truncateAmt - anchorOffset; candidateLength >= 1; candidateLength--) {
           const candidateStart = caretOffset - truncateAmt - candidateLength;
           const candidateEnd = caretOffset - truncateAmt - 1;
