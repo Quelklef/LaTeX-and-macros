@@ -1,7 +1,5 @@
 # Text Macros & LaTeX
 
-_... Because all the other extensions sucked_
-
 This extension is for writing math via pseudo-LaTeX in chrome.
 As you type, LaTeX commands will be replaced with their unicode counterparts.
 See the gif below.
